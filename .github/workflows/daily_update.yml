@@ -2,9 +2,9 @@ name: DevSync Daily Repository Update
 
 on:
   schedule:
-    # Runs at 05:30 UTC every day
-    - cron: '30 5 * * *'
-  workflow_dispatch: # Allows you to trigger it manually for testing
+    # 17:22 IST = 11:52 UTC
+    - cron: '52 11 * * *'
+  workflow_dispatch: # Allows manual trigger for immediate verification
 
 jobs:
   automated-commit:
@@ -17,10 +17,11 @@ jobs:
         run: |
           echo "Last automated update: $(date)" > daily_status.txt
 
-      - name: Commit and Push changes
+      - name: Configure Git and Commit
         run: |
           git config --local user.email "23f1002313@ds.study.iitm.ac.in"
           git config --local user.name "DevSync Automation"
           git add daily_status.txt
-          git commit -m "DevSync Daily Update: $(date +'%Y-%m-%d')"
+          # The || true ensures the workflow doesn't fail if there are no changes to commit
+          git commit -m "DevSync Daily Update: $(date +'%Y-%m-%d')" || exit 0
           git push
