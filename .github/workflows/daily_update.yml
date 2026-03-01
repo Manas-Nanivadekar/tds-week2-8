@@ -2,9 +2,12 @@ name: DevSync Daily Repository Update
 
 on:
   schedule:
-    # 17:22 IST = 11:52 UTC
-    - cron: '52 11 * * *'
-  workflow_dispatch: # Allows manual trigger for immediate verification
+    - cron: '52 14 * * *'
+  workflow_dispatch:
+
+# Add this block here
+permissions:
+  contents: write
 
 jobs:
   automated-commit:
@@ -22,6 +25,5 @@ jobs:
           git config --local user.email "23f1002313@ds.study.iitm.ac.in"
           git config --local user.name "DevSync Automation"
           git add daily_status.txt
-          # The || true ensures the workflow doesn't fail if there are no changes to commit
           git commit -m "DevSync Daily Update: $(date +'%Y-%m-%d')" || exit 0
           git push
